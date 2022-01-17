@@ -5,6 +5,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -26,19 +27,27 @@ public class Main {
         String fileName = "data.csv";
 
         List<Employee> list = parseCSV(columnMapping, fileName);
-       // list.forEach(System.out::println);
+        //list.forEach(System.out::println);
 
         String json = listToJson(list);
-        // System.out.println(json);
+        //System.out.println(json);
 
         writeString(json, "new_data.json");
 
 // Задача 2: XML - JSON парсер
         List<Employee> listXML = parseXML("data.xml");
         String jsonXML = listToJson(listXML);
-        // System.out.println(jsonXML);
+        //System.out.println(jsonXML);
 
         writeString(jsonXML, "new_data_XML.json");
+
+        //Задача 3: JSON парсер
+        String jsonJSON = readString("new_data.json");
+        System.out.println(jsonJSON);
+        List<Employee> listJSON = jsonToList(jsonJSON);
+        for (Employee employee : listJSON) {
+            System.out.println(employee);
+        }
 
     }
 
@@ -127,4 +136,36 @@ public class Main {
         return list;
     }
 
+    private static String readString(String fileName) {
+        String s = null;
+        StringBuilder str = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+
+            while ((s = br.readLine()) != null) {
+                // System.out.println(s);
+                str.append(s);
+            }
+            // System.out.println(str);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+
+        return str.toString();
+    }
+
+    private static List<Employee> jsonToList(String jsonJSON) {
+
+        List<Employee> listJSON = new ArrayList<Employee>();
+
+        Gson gson = new Gson();
+
+        Type userListType = new TypeToken<List<Employee>>() {
+        }.getType();
+
+        listJSON = gson.fromJson(jsonJSON, userListType);
+
+
+        return listJSON;
+    }
 }
