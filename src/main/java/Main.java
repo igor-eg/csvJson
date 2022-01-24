@@ -102,9 +102,8 @@ public class Main {
         String lastName = null;
         String country = null;
         int age = 0;
-        int i = 0;
-        String m = null;
-        String f = null;
+        String textContent = null;
+        String nodeName = null;
         Employee employee = new Employee();
         List<Employee> list = new ArrayList<Employee>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -114,16 +113,16 @@ public class Main {
         // System.out.println("Корневой элемент: " + root.getNodeName());
 
         NodeList nodeList = root.getChildNodes();
-        for (i = 0; i < nodeList.getLength(); i++) {
+        for (int i = 0; i < nodeList.getLength(); i++) {
             Node node_ = nodeList.item(i);
 
             if (Node.ELEMENT_NODE == node_.getNodeType()) {
 
                 if (node_.getNodeType() == 1) {
 
-                    f = node_.getNodeName();
-                    m = node_.getTextContent();
-                    String peopleArray = m.replaceAll("\\s+", " ");
+                    nodeName = node_.getNodeName();
+                    textContent = node_.getTextContent();
+                    String peopleArray = textContent.replaceAll("\\s+", " ");
                     String[] ary = peopleArray.split(" ");
                     employee = new Employee(Long.parseLong(ary[1]), ary[2], ary[3], ary[4], Integer.parseInt(ary[5]));
                     list.add(employee);
@@ -137,13 +136,13 @@ public class Main {
     }
 
     private static String readString(String fileName) {
-        String s = null;
+        String nextLine = null;
         StringBuilder str = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
-            while ((s = br.readLine()) != null) {
-                // System.out.println(s);
-                str.append(s);
+            while ((nextLine = br.readLine()) != null) {
+                // System.out.println(nextLine);
+                str.append(nextLine);
             }
             // System.out.println(str);
         } catch (IOException ex) {
